@@ -1,0 +1,150 @@
+
+//03/4/2026, friday, now its 10:13pm, but i started CAISII4 a few minutes ago.
+// 11:23pm. NO, i didnt stop. Ill save on "versions\caisii-04-1"
+// saved. It can be used on a .js archive. By Felipe! 
+// Bye, Computer, btw.
+
+
+var talk = new ActiveXObject("SAPI.SpVoice")
+var voices = talk.GetVoices()
+talk.Voice = voices.Item(2)
+talk.Rate = -5
+
+
+
+
+
+
+var fso = new ActiveXObject("Scripting.FileSystemObject")
+
+
+var hiDict = "..\\Dictionary\\hi.txt"
+var hiAnswerDict = "..\\Dictionary\\hiAnswer.txt"
+var symbolsDict = "..\\Dictionary\\symbols.txt"
+
+
+
+
+
+
+
+function applyParamsTo(phrase){
+	
+	phrase = phrase.toLowerCase()
+	phrase = phrase.replace(/\s+/g," ")
+	
+		for(var num = 0; num < symbols.length; num++){
+			
+			var symbol = symbols[num]
+			
+			if(phrase.indexOf(symbol) >= 0){
+				if(symbol != "?"){
+				var regex = new RegExp(symbol, "gi")
+			phrase = phrase.replace(regex, "")
+				} else {
+					phrase = phrase.replace(/\?/g," ")
+				}
+			}
+		
+	}
+	
+	
+	var splitedPhrase = phrase.split(" ")
+	var usefullPhrase = ""
+	
+	
+	for(var wordNum = 0; wordNum < splitedPhrase.length; wordNum++){
+		
+		var word = splitedPhrase[wordNum]
+		var lastLetter = ""
+		var wordToKeep = ""
+		
+		for(var letterNum = 0; letterNum < word.length; letterNum++){
+			
+			var letter = word.charAt(letterNum)
+			
+            if(letter!=lastLetter){
+				
+				wordToKeep += letter
+				
+			}
+			
+			lastLetter = letter
+			
+		}
+		
+		usefullPhrase += wordToKeep + " "
+		
+	}
+	
+	
+	return usefullPhrase
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var hiFile = fso.OpenTextFile(hiDict, 1)
+var hiContent = hiFile.ReadAll()
+hiFile.Close()
+var hies = hiContent.split("'")
+
+
+var hiAnswerFile = fso.OpenTextFile(hiAnswerDict, 1)
+var hiAnswerContent = hiAnswerFile.ReadAll()
+hiAnswerFile.Close()
+var hiAnswers = hiAnswerContent.split("'")
+
+
+var symbolsFile = fso.OpenTextFile(symbolsDict, 1)
+var symbolsContent = symbolsFile.ReadAll()
+symbolsFile.Close()
+var symbols = symbolsContent.split("[/]")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+while(true){
+	
+	
+	
+	var input = WScript.StdIn.ReadLine()
+	input = applyParamsTo(input)
+	
+	WScript.Echo(input)
+	
+	talk.Speak("caisi interpretou oque voce disse como: " + input)
+	
+	
+	
+}
